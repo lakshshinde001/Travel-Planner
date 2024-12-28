@@ -1,14 +1,11 @@
 import { StyleSheet, View, Text } from 'react-native';
-
+import Login from "../Components/Login"
 
 export default function HomeScreen() {
   return (
    <View style={{ flex: 1 }}>
 
-    <Text style={{
-        fontSize:30,
-        fontFamily: 'outfit-medium'
-    }} >Hello World 2</Text>
+    <Login/>
    </View>
   );
 }
