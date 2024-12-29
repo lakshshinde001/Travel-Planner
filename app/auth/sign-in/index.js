@@ -1,14 +1,44 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native'
+import React, { useState } from 'react'
 import { Colors } from '@/constants/Colors'
 import { TextInput } from 'react-native'
 import { useRouter } from 'expo-router'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { auth } from '../../../configs/FirebaseConfig.jsx'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+
 
 export default function index() {
 
   const router = useRouter()
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState();
 
+
+
+  const signInUser = () => {
+
+    if(!email || !password){
+      ToastAndroid.show("All fields are required", ToastAndroid.BOTTOM);
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
+    if(errorCode == 'auth/invalid-credential'){
+      ToastAndroid.show("Invalid Credentials", ToastAndroid.BOTTOM);
+    }
+    console.log(errorMessage);
+  });
+  }
 
   return (
     <View style={{padding:20, paddingTop:50, backgroundColor:Colors.white, height:'100%'}}>
@@ -29,21 +59,24 @@ export default function index() {
         <Text style={{fontStyle:'outfit-medium'}} >Email</Text>
         <TextInput 
         style={styles.input}
-        placeholder='Enter Your Email..' />
+        placeholder='Enter Your Email..'
+        onChangeText={(value) => setEmail(value)}
+        />
       </View>
       <View style={{marginTop:20}}>
         <Text>password</Text>
         <TextInput 
         style={styles.input}
         secureTextEntry={true}
+        onChangeText={(e)=>setPassword(e)}
         placeholder='Enter Your Password' />
       </View>
 
-      <View style={{padding:20, marginTop:20 , backgroundColor: Colors.primary, borderRadius:15}}>
+      <TouchableOpacity onPress={signInUser} style={{padding:20, marginTop:20 , backgroundColor: Colors.primary, borderRadius:15}}>
         <Text
           style={{color:Colors.white, textAlign:'center' }}
         >Sign In</Text>
-      </View>
+      </TouchableOpacity>
 
       <TouchableOpacity 
         onPress={() => router.push('auth/sign-up')}
