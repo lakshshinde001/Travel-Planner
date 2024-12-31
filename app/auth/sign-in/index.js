@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Colors } from '@/constants/Colors'
 import { TextInput } from 'react-native'
 import { useRouter } from 'expo-router'
@@ -8,15 +8,24 @@ import { auth } from '../../../configs/FirebaseConfig.jsx'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 
 
-export default function index() {
+export default function SignIn() {
 
   const router = useRouter()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState();
 
 
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await AsyncStorage.getItem('user');
+      if (user) {
+        router.push('(tabs)/mytrip');
+      }
+    };
+    checkUser();
+  }, []);
 
-  const signInUser = () => {
+  const signInUser = async () => {
 
     if(!email || !password){
       ToastAndroid.show("All fields are required", ToastAndroid.BOTTOM);
@@ -27,6 +36,10 @@ export default function index() {
     // Signed in 
     const user = userCredential.user;
     console.log(user)
+    
+     AsyncStorage.setItem('user', JSON.stringify(user));
+     router.push('(tabs)/mytrip');
+    
     // ...
   })
   .catch((error) => {
