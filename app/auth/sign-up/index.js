@@ -27,6 +27,7 @@ export default function index() {
     // Signed up 
     const user = userCredential.user;
     console.log(user);
+    router.push('(tabs)/mytrip');
     // ...
   })
   .catch((error) => {

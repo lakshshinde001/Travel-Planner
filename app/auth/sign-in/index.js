@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { auth } from '../../../configs/FirebaseConfig.jsx'
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function SignIn() {

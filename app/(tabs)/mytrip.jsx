@@ -4,7 +4,7 @@ import React from 'react'
 export default function MyTrip() {
   return (
     <View>
-      <Text>mytrip</Text>
+      <Text>MyTrip</Text>
     </View>
   )
 }
